@@ -11,17 +11,24 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
   scr.textContent = '(' + inPageWorld + ')();';
   document.documentElement.appendChild(scr).remove();
 
-  const instancesById: {[id: number]: CORBWorkaroundXMLHttpRequest} = {};
+  const instancesById: { [id: number]: CORBWorkaroundXMLHttpRequest } = {};
 
   const channel = new MessageChannel();
   const port = channel.port1;
   port.addEventListener('message', event => {
-    const {id, type} = event.data;
+    const { id, type } = event.data;
     const xhr = instancesById[id];
     switch (type) {
       case 'COMPLETE': {
-        const {headers, readyState, status, response, responseText, responseURL} = event.data;
-        const headersObj: {[header: string]: string} = {};
+        const {
+          headers,
+          readyState,
+          status,
+          response,
+          responseText,
+          responseURL
+        } = event.data;
+        const headersObj: { [header: string]: string } = {};
         headers.split('\r\n').forEach((line: string) => {
           const [name, value] = line.split(':');
           if (name && value) {
@@ -38,8 +45,11 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
         delete instancesById[id];
 
         for (const event of ['load', 'loadend', 'readystatechange']) {
-          const eventObj = {name: event, target: xhr};
-          const handlers = Object.prototype.hasOwnProperty.call(xhr._eventListeners, event)
+          const eventObj = { name: event, target: xhr };
+          const handlers = Object.prototype.hasOwnProperty.call(
+            xhr._eventListeners,
+            event
+          )
             ? xhr._eventListeners[event]
             : [];
           handlers.forEach(handler => handler(eventObj));
@@ -51,16 +61,26 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
       }
       default: {
         // eslint-disable-next-line no-console
-        console.error('ext-corb-workaround: Unknown event in content script:', event);
+        console.error(
+          'ext-corb-workaround: Unknown event in content script:',
+          event
+        );
       }
     }
   });
   port.addEventListener('messageerror', event => {
     // eslint-disable-next-line no-console
-    console.error('ext-corb-workaround: Unknown error in content script:', event);
+    console.error(
+      'ext-corb-workaround: Unknown error in content script:',
+      event
+    );
   });
   port.start();
-  window.postMessage({type: 'PORT_FOR_CORB_WORKAROUND'}, document.location.origin, [channel.port2]);
+  window.postMessage(
+    { type: 'PORT_FOR_CORB_WORKAROUND' },
+    document.location.origin,
+    [channel.port2]
+  );
 
   let nextFreeId = 0;
   class CORBWorkaroundXMLHttpRequest {
@@ -77,8 +97,8 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
     public DONE = 4;
 
     private _id = nextFreeId++;
-    public _eventListeners: {[name: string]: Function[]} = {};
-    public _headersObj: {[name: string]: string} = {};
+    public _eventListeners: { [name: string]: Function[] } = {};
+    public _headersObj: { [name: string]: string } = {};
 
     public status = 0;
     public readyState = 0;
@@ -98,7 +118,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
     public constructor() {
       const id = this._id;
       instancesById[id] = this;
-      port.postMessage({type: 'NEW_XHR', id});
+      port.postMessage({ type: 'NEW_XHR', id });
       for (const prop of ['responseType', 'withCredentials'] as const) {
         let value: any = undefined;
         Object.defineProperty(this, prop, {
@@ -107,13 +127,21 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
           },
           set(newValue) {
             value = newValue;
-            port.postMessage({type: 'SET', id, prop, value: newValue});
+            port.postMessage({ type: 'SET', id, prop, value: newValue });
           }
         });
       }
-      for (const method of ['setRequestHeader', 'open', 'send', 'abort'] as const) {
+      for (const method of [
+        'setRequestHeader',
+        'open',
+        'send',
+        'abort'
+      ] as const) {
         this[method] = (...args: any[]) => {
-          port.postMessage({type: 'CALL', id, method, args}, transferrables(args));
+          port.postMessage(
+            { type: 'CALL', id, method, args },
+            transferrables(args)
+          );
         };
       }
     }

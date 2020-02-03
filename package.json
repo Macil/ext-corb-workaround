@@ -5,7 +5,10 @@
   "main": "dist/src/index.js",
   "sideEffects": false,
   "scripts": {
-    "prepare": "rimraf dist && babel -s true -d dist/src/ src/ -x .ts --ignore '**/*.test.ts' && tsc"
+    "prepare": "rimraf dist && babel -s true -d dist/src/ src/ -x .ts --ignore '**/*.test.ts' && tsc",
+    "test": "yarn run lint",
+    "lint": "prettier-check '**/*.{js,jsx,ts,tsx}'",
+    "lint-fix": "prettier --write '**/*.{js,jsx,ts,tsx}'"
   },
   "files": [
     "dist"
@@ -26,6 +29,15 @@
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-typescript": "^7.8.3",
     "@types/lodash": "^4.14.149",
+    "husky": "^4.2.1",
+    "prettier": "^1.19.1",
+    "prettier-check": "^2.0.0",
+    "pretty-quick": "^2.0.1",
     "typescript": "^3.7.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
