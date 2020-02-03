@@ -33,6 +33,7 @@
     "prettier": "^1.19.1",
     "prettier-check": "^2.0.0",
     "pretty-quick": "^2.0.1",
+    "rimraf": "^3.0.1",
     "typescript": "^3.7.5"
   },
   "husky": {
