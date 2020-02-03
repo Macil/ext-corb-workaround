@@ -21,7 +21,7 @@ This function returns an XMLHttpRequest-like object which can be used like XMLHt
 Usage example:
 
 ```js
-import {getXMLHttpRequest} from 'ext-corb-workaround';
+import { getXMLHttpRequest } from 'ext-corb-workaround';
 
 function getWithCorbWorkaround(url) {
   return new Promise((resolve, reject) => {
