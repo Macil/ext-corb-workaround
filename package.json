@@ -1,0 +1,31 @@
+{
+  "name": "ext-corb-workaround",
+  "version": "1.0.0",
+  "description": "A work-around for CORB restrictions in Chrome extensions",
+  "main": "dist/src/index.js",
+  "sideEffects": false,
+  "scripts": {
+    "prepare": "rimraf dist && babel -s true -d dist/src/ src/ -x .ts --ignore '**/*.test.ts' && tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": "https://github.com/Macil/ext-corb-workaround",
+  "author": "Chris Cowan <agentme49@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@babel/runtime": "^7.8.4",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-typescript": "^7.8.3",
+    "@types/lodash": "^4.14.149",
+    "typescript": "^3.7.5"
+  }
+}
