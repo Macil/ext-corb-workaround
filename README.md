@@ -1,6 +1,6 @@
 # ext-corb-workaround
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Macil/ext-corb-workaround/blob/master/LICENSE.txt) [![CI](https://github.com/Macil/ext-corb-workaround/workflows/CI/badge.svg)](https://github.com/Macil/ext-corb-workaround/actions?query=workflow%3ACI+branch%3Amaster)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Macil/ext-corb-workaround/blob/master/LICENSE.txt) [![npm version](https://badge.fury.io/js/ext-corb-workaround.svg)](https://badge.fury.io/js/ext-corb-workaround) [![CI](https://github.com/Macil/ext-corb-workaround/workflows/CI/badge.svg)](https://github.com/Macil/ext-corb-workaround/actions?query=workflow%3ACI+branch%3Amaster)
 
 This package is a work-around for a bug with Cross-Origin Request Blocking (CORB) as implemented in Chrome extensions.
 
