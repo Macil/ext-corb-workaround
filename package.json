@@ -6,7 +6,7 @@
   "sideEffects": false,
   "scripts": {
     "prepare": "rimraf dist && babel -s true -d dist/src/ src/ -x .ts --ignore '**/*.test.ts' && tsc",
-    "test": "yarn run lint",
+    "test": "yarn run lint && jest",
     "lint": "eslint . --ext ts,tsx && prettier-check '**/*.{js,jsx,ts,tsx}'",
     "lint-fix": "eslint . --ext ts,tsx --fix && prettier --write '**/*.{js,jsx,ts,tsx}'"
   },
@@ -28,11 +28,14 @@
     "@babel/plugin-transform-runtime": "^7.8.3",
     "@babel/preset-env": "^7.8.4",
     "@babel/preset-typescript": "^7.8.3",
+    "@types/jest": "^25.1.1",
     "@types/lodash": "^4.14.149",
     "@typescript-eslint/eslint-plugin": "^2.19.0",
     "@typescript-eslint/parser": "^2.19.0",
+    "babel-jest": "^25.1.0",
     "eslint": "^6.8.0",
     "husky": "^4.2.1",
+    "jest": "^25.1.0",
     "prettier": "^1.19.1",
     "prettier-check": "^2.0.0",
     "pretty-quick": "^2.0.1",
