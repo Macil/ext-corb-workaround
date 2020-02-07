@@ -33,7 +33,7 @@ function pageWorldScript() {
     }
 
     window.removeEventListener('message', handler);
-    const port = event.ports[0];
+    const port = event.data.port;
     const instancesById = {};
     port.addEventListener('message', event => {
       const {id} = event.data;
@@ -96,4 +96,4 @@ function pageWorldScript() {
   window.addEventListener('message', handler);
 }
 ` +
-  ')();';
+  ')(); //# sourceURL=npm://ext-corb-workaround/pageWorldScript.js';
