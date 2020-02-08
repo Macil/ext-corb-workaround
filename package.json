@@ -1,6 +1,6 @@
 {
   "name": "ext-corb-workaround",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A work-around for CORB restrictions in Chrome extensions",
   "main": "dist/src/index.js",
   "sideEffects": false,
