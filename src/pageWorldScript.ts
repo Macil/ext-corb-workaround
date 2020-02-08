@@ -30,7 +30,7 @@ function pageWorldScript(moduleId) {
   function handler(event) {
     if (
       !event.data ||
-      event.data.type !== 'PORT_FOR_CORB_WORKAROUND' ||
+      event.data.type !== 'ext-corb-workaround_port' ||
       event.data.moduleId !== moduleId
     ) {
       return;

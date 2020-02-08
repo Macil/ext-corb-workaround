@@ -79,7 +79,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
   });
   port.start();
   window.postMessage(
-    { type: 'PORT_FOR_CORB_WORKAROUND', moduleId, port: channel.port2 },
+    { type: 'ext-corb-workaround_port', moduleId, port: channel.port2 },
     document.location.origin,
     [channel.port2]
   );
