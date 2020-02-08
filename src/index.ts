@@ -3,8 +3,14 @@ import { pageWorldScript } from './pageWorldScript';
 import transferrables from './transferrables';
 
 export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
+  // Make sure we communicate to the injected script that's paired with
+  // this instance of this module. This is necessary in case there are
+  // multiple javascript bundles with this package executing at once in the
+  // same page.
+  const moduleId = Math.random() + '-' + Date.now();
+
   const scr = document.createElement('script');
-  scr.textContent = pageWorldScript;
+  scr.textContent = pageWorldScript(moduleId);
   document.documentElement.appendChild(scr).remove();
 
   const instancesById: { [id: number]: CORBWorkaroundXMLHttpRequest } = {};
@@ -73,7 +79,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
   });
   port.start();
   window.postMessage(
-    { type: 'PORT_FOR_CORB_WORKAROUND', port: channel.port2 },
+    { type: 'PORT_FOR_CORB_WORKAROUND', moduleId, port: channel.port2 },
     document.location.origin,
     [channel.port2]
   );

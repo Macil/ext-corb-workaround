@@ -1,8 +1,8 @@
 // content only gets executed in injected script in page's world
-export const pageWorldScript =
+export const pageWorldScript = (moduleId: string) =>
   '(' +
   `
-function pageWorldScript() {
+function pageWorldScript(moduleId) {
   'use strict';
 
   // save a reference to XHR so we use the original instead of any replacements that extensions may place.
@@ -28,7 +28,11 @@ function pageWorldScript() {
   }
 
   function handler(event) {
-    if (!event.data || event.data.type !== 'PORT_FOR_CORB_WORKAROUND') {
+    if (
+      !event.data ||
+      event.data.type !== 'PORT_FOR_CORB_WORKAROUND' ||
+      event.data.moduleId !== moduleId
+    ) {
       return;
     }
 
@@ -96,4 +100,6 @@ function pageWorldScript() {
   window.addEventListener('message', handler);
 }
 ` +
-  ')(); //# sourceURL=npm://ext-corb-workaround/pageWorldScript.js';
+  `)(${JSON.stringify(
+    moduleId
+  )}); //# sourceURL=npm://ext-corb-workaround/pageWorldScript.js`;
