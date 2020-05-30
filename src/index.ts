@@ -2,6 +2,8 @@ import once from 'lodash/once';
 import { pageWorldScript } from './pageWorldScript';
 import transferrables from './transferrables';
 
+type EventHandler = (event: any) => void;
+
 export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
   // Make sure we communicate to the injected script that's paired with
   // this instance of this module. This is necessary in case there are
@@ -29,7 +31,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
           statusText,
           response,
           responseText,
-          responseURL
+          responseURL,
         } = event.data;
         const headersObj: { [header: string]: string } = {};
         headers.split('\r\n').forEach((line: string) => {
@@ -101,7 +103,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
     public DONE = 4;
 
     private _id = nextFreeId++;
-    public _eventListeners: { [name: string]: Function[] } = {};
+    public _eventListeners: { [name: string]: EventHandler[] } = {};
     public _headersObj: { [name: string]: string } = {};
 
     public status = 0;
@@ -133,14 +135,14 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
           set(newValue) {
             value = newValue;
             port.postMessage({ type: 'SET', id, prop, value: newValue });
-          }
+          },
         });
       }
       for (const method of [
         'setRequestHeader',
         'open',
         'send',
-        'abort'
+        'abort',
       ] as const) {
         this[method] = (...args: any[]) => {
           port.postMessage(
@@ -159,13 +161,13 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
         return this._headersObj[header];
       }
     }
-    public addEventListener(event: string, handler: Function) {
+    public addEventListener(event: string, handler: EventHandler) {
       if (!Object.prototype.hasOwnProperty.call(this._eventListeners, event)) {
         this._eventListeners[event] = [];
       }
       this._eventListeners[event].push(handler);
     }
-    public removeEventListener(event: string, handler: Function) {
+    public removeEventListener(event: string, handler: EventHandler) {
       if (Object.prototype.hasOwnProperty.call(this._eventListeners, event)) {
         this._eventListeners[event] = this._eventListeners[event].filter(
           _handler => handler !== _handler

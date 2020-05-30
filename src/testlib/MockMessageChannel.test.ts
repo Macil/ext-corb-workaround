@@ -17,9 +17,9 @@ test('works', async () => {
     [
       expect.objectContaining({
         type: 'message',
-        data: 'hiiii to port 1'
-      })
-    ]
+        data: 'hiiii to port 1',
+      }),
+    ],
   ]);
   expect(port2Handler.mock.calls).toEqual([]);
   port2.start();
@@ -30,15 +30,15 @@ test('works', async () => {
     [
       expect.objectContaining({
         type: 'message',
-        data: 'hiiii to port 2'
-      })
+        data: 'hiiii to port 2',
+      }),
     ],
     [
       expect.objectContaining({
         type: 'message',
-        data: 'hiiii to port 2 again'
-      })
-    ]
+        data: 'hiiii to port 2 again',
+      }),
+    ],
   ]);
 
   port2.postMessage('hiiii to port 1 again');
@@ -47,7 +47,7 @@ test('works', async () => {
   expect(port1Handler.mock.calls[1]).toEqual([
     expect.objectContaining({
       type: 'message',
-      data: 'hiiii to port 1 again'
-    })
+      data: 'hiiii to port 1 again',
+    }),
   ]);
 });

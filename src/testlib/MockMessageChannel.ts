@@ -1,7 +1,9 @@
 import remove from 'lodash/remove';
 
+type EventHandler = (event: any) => void;
+
 export class MockMessagePort implements MessagePort {
-  private eventListeners = new Map<string, Function[]>();
+  private eventListeners = new Map<string, EventHandler[]>();
   private startEventBuffer: Array<any> | null = [];
   private closed = false;
   private getOther: () => MockMessagePort;
@@ -35,7 +37,7 @@ export class MockMessagePort implements MessagePort {
           defaultPrevented: false,
           preventDefault() {
             this.defaultPrevented = true;
-          }
+          },
         };
         if (other.startEventBuffer) {
           other.startEventBuffer.push(event);
@@ -54,7 +56,7 @@ export class MockMessagePort implements MessagePort {
       }
     });
   }
-  addEventListener(type: any, listener: any, _options?: any) {
+  addEventListener(type: any, listener: EventHandler, _options?: any) {
     const existingList = this.eventListeners.get(type);
     if (existingList) {
       existingList.push(listener);
@@ -62,7 +64,7 @@ export class MockMessagePort implements MessagePort {
       this.eventListeners.set(type, [listener]);
     }
   }
-  removeEventListener(type: any, listener: any, _options?: any) {
+  removeEventListener(type: any, listener: EventHandler, _options?: any) {
     const existingList = this.eventListeners.get(type);
     if (existingList) {
       remove(existingList, listener);
