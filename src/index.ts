@@ -26,6 +26,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
           headers,
           readyState,
           status,
+          statusText,
           response,
           responseText,
           responseURL
@@ -40,6 +41,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
         xhr._headers = headers;
         xhr._headersObj = headersObj;
         xhr.status = status;
+        xhr.statusText = statusText;
         xhr.readyState = readyState;
         xhr.response = response;
         xhr.responseText = responseText;
@@ -103,6 +105,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
     public _headersObj: { [name: string]: string } = {};
 
     public status = 0;
+    public statusText = '';
     public readyState = 0;
     public response = '';
     public responseText = '';

@@ -62,6 +62,7 @@ function pageWorldScript(moduleId) {
                 headers: xhr.getAllResponseHeaders(),
                 readyState: xhr.readyState,
                 status: xhr.status,
+                statusText: xhr.statusText,
                 responseURL: xhr.responseURL,
                 response: xhr.response,
                 responseText
