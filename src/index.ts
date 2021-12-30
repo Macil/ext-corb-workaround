@@ -175,7 +175,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
       }
     }
   }
-  return (CORBWorkaroundXMLHttpRequest as any) as typeof XMLHttpRequest;
+  return CORBWorkaroundXMLHttpRequest as any as typeof XMLHttpRequest;
 });
 
 // TODO add replacement fetch too?

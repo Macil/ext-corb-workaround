@@ -12,9 +12,8 @@ export class MockMessagePort implements MessagePort {
     this.getOther = getOther;
   }
 
-  private _onmessage:
-    | ((this: MessagePort, ev: MessageEvent) => any)
-    | null = null;
+  private _onmessage: ((this: MessagePort, ev: MessageEvent) => any) | null =
+    null;
   set onmessage(value: ((this: MessagePort, ev: MessageEvent) => any) | null) {
     this._onmessage = value;
     this.start();
