@@ -12,6 +12,37 @@ Because this proxies the connection through the web page's javascript context, i
 
 **If possible, follow the recommendations inside the ["Recommended Developer Actions" section of Chrome's CORB/extension documentation](https://www.chromium.org/Home/chromium-security/extension-content-script-fetches#TOC-Recommended-Developer-Actions) instead of using this package.** This package should only be used where you specifically want the request to run as if it came from the content script's page rather than as the extension.
 
+## Setup
+
+In order to use this library, you must execute a script in the page's main world which calls an initializer function from this library. This requires a separate content script, background script, and page world script in your extension.
+
+In an extension content script:
+
+```js
+chrome.runtime.sendMessage({ type: 'injectPageWorld' });
+```
+
+In an extension background service worker:
+
+```js
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'injectPageWorld' && sender.tab) {
+    chrome.scripting.executeScript({
+      target: { tabId: sender.tab.id },
+      world: 'MAIN',
+      files: ['pageWorld.js'],
+    });
+  }
+});
+```
+
+In pageWorld.js:
+
+```js
+import { init } from 'ext-corb-workaround/dist/src/pageWorld';
+init();
+```
+
 ## API
 
 This library exports two functions:

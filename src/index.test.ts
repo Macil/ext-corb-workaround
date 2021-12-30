@@ -5,12 +5,14 @@ window.MessageChannel = MockMessageChannel;
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 
+import { init } from './pageWorld';
 import * as extCorbWorkaroundType from './';
 function loadNewInstance(): typeof extCorbWorkaroundType {
   let result: any;
   jest.isolateModules(() => {
     result = require('./');
   });
+  init();
   return result;
 }
 

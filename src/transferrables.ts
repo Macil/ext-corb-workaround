@@ -1,4 +1,3 @@
-// should match transferrables function in pageWorldScript.ts
 export default function transferrables(list: any[]): any[] {
   return list
     .map(value => {

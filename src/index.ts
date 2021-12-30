@@ -1,5 +1,5 @@
 import once from 'lodash/once';
-import { pageWorldScript } from './pageWorldScript';
+import { moduleId } from './moduleId';
 import transferrables from './transferrables';
 
 type EventHandler = (event: any) => void;
@@ -9,12 +9,6 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
   // this instance of this module. This is necessary in case there are
   // multiple javascript bundles with this package executing at once in the
   // same page.
-  const moduleId = Math.random() + '-' + Date.now();
-
-  const scr = document.createElement('script');
-  scr.textContent = pageWorldScript(moduleId);
-  document.documentElement.appendChild(scr).remove();
-
   const instancesById: { [id: number]: CORBWorkaroundXMLHttpRequest } = {};
 
   const channel = new MessageChannel();

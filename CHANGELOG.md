@@ -1,3 +1,7 @@
+## 2.0.0 (2021-12-30)
+
+Breaking change: in order to support Chrome extension manifest version 3, this library no longer handles injecting a page world script itself. You must set up a page world script yourself and load the "ext-corb-workaround/pageWorld" module into it.
+
 ## 1.0.2 (2020-05-29)
 
 - Added the `statusText` property to the wrapped XMLHttpRequest object.

@@ -1,46 +1,29 @@
-// content only gets executed in injected script in page's world
-export const pageWorldScript = (moduleId: string) =>
-  '(' +
-  `
-function pageWorldScript(moduleId) {
-  'use strict';
+// must be executed in page's world
 
+import transferrables from './transferrables';
+import { moduleId } from './moduleId';
+
+export function init() {
   // save a reference to XHR so we use the original instead of any replacements that extensions may place.
   const XMLHttpRequest = window.XMLHttpRequest;
 
-  // should match transferrables.ts
-  function transferrables(list) {
-    return list
-      .map(value => {
-        if (value && typeof value === 'object' && value.__proto__) {
-          if (value.__proto__.constructor.name === 'ArrayBuffer') {
-            return value;
-          }
-          if (
-            value.__proto__.__proto__ &&
-            value.__proto__.__proto__.constructor.name === 'TypedArray'
-          ) {
-            return value.buffer;
-          }
-        }
-      })
-      .filter(Boolean);
-  }
-
-  function handler(event) {
+  function handler(event: MessageEvent) {
     if (
       !event.data ||
       event.data.type !== 'ext-corb-workaround_port' ||
-      event.data.moduleId !== moduleId
+      event.data.moduleId !== moduleId ||
+      (event as any).__ext_claimed
     ) {
       return;
     }
 
+    (event as any).__ext_claimed = true;
     window.removeEventListener('message', handler);
+
     const port = event.data.port;
-    const instancesById = {};
-    port.addEventListener('message', event => {
-      const {id} = event.data;
+    const instancesById: { [id: number]: XMLHttpRequest } = {};
+    port.addEventListener('message', (event: MessageEvent) => {
+      const { id } = event.data;
       switch (event.data.type) {
         case 'NEW_XHR': {
           const xhr = (instancesById[id] = new XMLHttpRequest());
@@ -65,7 +48,7 @@ function pageWorldScript(moduleId) {
                 statusText: xhr.statusText,
                 responseURL: xhr.responseURL,
                 response: xhr.response,
-                responseText
+                responseText,
               },
               transferrables([xhr.response])
             );
@@ -73,26 +56,29 @@ function pageWorldScript(moduleId) {
           break;
         }
         case 'SET': {
-          const {prop, value} = event.data;
-          instancesById[id][prop] = value;
+          const { prop, value } = event.data;
+          (instancesById[id] as any)[prop] = value;
           break;
         }
         case 'CALL': {
-          const {method, args} = event.data;
+          const { method, args } = event.data;
           // Let abort calls silently fail if the XHR isn't present.
           if (method === 'abort' && !instancesById[id]) {
             break;
           }
-          instancesById[id][method](...args);
+          (instancesById[id] as any)[method](...args);
           break;
         }
         default: {
           // eslint-disable-next-line no-console
-          console.error('ext-corb-workaround: Unknown event in page world:', event);
+          console.error(
+            'ext-corb-workaround: Unknown event in page world:',
+            event
+          );
         }
       }
     });
-    port.addEventListener('messageerror', event => {
+    port.addEventListener('messageerror', (event: Event) => {
       // eslint-disable-next-line no-console
       console.error('ext-corb-workaround: Unknown error in page world:', event);
     });
@@ -100,7 +86,3 @@ function pageWorldScript(moduleId) {
   }
   window.addEventListener('message', handler);
 }
-` +
-  `)(${JSON.stringify(
-    moduleId
-  )}); //# sourceURL=npm://ext-corb-workaround/pageWorldScript.js`;
