@@ -34,6 +34,10 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
             headersObj[name.toLowerCase().trim()] = value.trim();
           }
         });
+        // Prevents logging brought up in https://github.com/InboxSDK/InboxSDK/issues/812
+        if (!xhr) {
+          return;
+        }
         xhr._headers = headers;
         xhr._headersObj = headersObj;
         xhr.status = status;
@@ -52,7 +56,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
           )
             ? xhr._eventListeners[event]
             : [];
-          handlers.forEach(handler => handler(eventObj));
+          handlers!.forEach(handler => handler(eventObj));
           if ((xhr as any)['on' + event]) {
             (xhr as any)['on' + event](eventObj);
           }
@@ -159,11 +163,11 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
       if (!Object.prototype.hasOwnProperty.call(this._eventListeners, event)) {
         this._eventListeners[event] = [];
       }
-      this._eventListeners[event].push(handler);
+      this._eventListeners[event]!.push(handler);
     }
     public removeEventListener(event: string, handler: EventHandler) {
       if (Object.prototype.hasOwnProperty.call(this._eventListeners, event)) {
-        this._eventListeners[event] = this._eventListeners[event].filter(
+        this._eventListeners[event] = this._eventListeners[event]!.filter(
           _handler => handler !== _handler
         );
       }
