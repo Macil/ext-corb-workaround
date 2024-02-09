@@ -91,7 +91,6 @@ export class MockMessageChannel implements MessageChannel {
   port2: MockMessagePort;
 
   constructor() {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const port1: MockMessagePort = new MockMessagePort(() => port2);
     const port2: MockMessagePort = new MockMessagePort(() => port1);
     this.port1 = port1;

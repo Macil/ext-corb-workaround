@@ -60,7 +60,6 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
         break;
       }
       default: {
-        // eslint-disable-next-line no-console
         console.error(
           'ext-corb-workaround: Unknown event in content script:',
           event,
@@ -69,7 +68,6 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
     }
   });
   port.addEventListener('messageerror', event => {
-    // eslint-disable-next-line no-console
     console.error(
       'ext-corb-workaround: Unknown error in content script:',
       event,

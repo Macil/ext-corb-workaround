@@ -70,7 +70,6 @@ export function init() {
           break;
         }
         default: {
-          // eslint-disable-next-line no-console
           console.error(
             'ext-corb-workaround: Unknown event in page world:',
             event,
@@ -79,7 +78,6 @@ export function init() {
       }
     });
     port.addEventListener('messageerror', (event: Event) => {
-      // eslint-disable-next-line no-console
       console.error('ext-corb-workaround: Unknown error in page world:', event);
     });
     port.start();

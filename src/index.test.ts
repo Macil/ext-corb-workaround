@@ -3,8 +3,6 @@ import { MockMessageChannel } from './testlib/MockMessageChannel';
 const originalXMLHttpRequest = window.XMLHttpRequest;
 window.MessageChannel = MockMessageChannel;
 
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 import { init } from './pageWorld';
 import * as extCorbWorkaroundType from './';
 function loadNewInstance(): typeof extCorbWorkaroundType {
