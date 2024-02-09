@@ -50,7 +50,7 @@ export function init() {
                 response: xhr.response,
                 responseText,
               },
-              transferrables([xhr.response])
+              transferrables([xhr.response]),
             );
           });
           break;
@@ -73,7 +73,7 @@ export function init() {
           // eslint-disable-next-line no-console
           console.error(
             'ext-corb-workaround: Unknown event in page world:',
-            event
+            event,
           );
         }
       }

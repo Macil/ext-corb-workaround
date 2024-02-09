@@ -48,7 +48,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
           const eventObj = { name: event, target: xhr };
           const handlers = Object.prototype.hasOwnProperty.call(
             xhr._eventListeners,
-            event
+            event,
           )
             ? xhr._eventListeners[event]
             : [];
@@ -63,7 +63,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
         // eslint-disable-next-line no-console
         console.error(
           'ext-corb-workaround: Unknown event in content script:',
-          event
+          event,
         );
       }
     }
@@ -72,14 +72,14 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
     // eslint-disable-next-line no-console
     console.error(
       'ext-corb-workaround: Unknown error in content script:',
-      event
+      event,
     );
   });
   port.start();
   window.postMessage(
     { type: 'ext-corb-workaround_port', moduleId, port: channel.port2 },
     document.location.origin,
-    [channel.port2]
+    [channel.port2],
   );
 
   let nextFreeId = 0;
@@ -141,7 +141,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
         this[method] = (...args: any[]) => {
           port.postMessage(
             { type: 'CALL', id, method, args },
-            transferrables(args)
+            transferrables(args),
           );
         };
       }
@@ -164,7 +164,7 @@ export const getXMLHttpRequest: () => typeof XMLHttpRequest = once(() => {
     public removeEventListener(event: string, handler: EventHandler) {
       if (Object.prototype.hasOwnProperty.call(this._eventListeners, event)) {
         this._eventListeners[event] = this._eventListeners[event].filter(
-          _handler => handler !== _handler
+          _handler => handler !== _handler,
         );
       }
     }
