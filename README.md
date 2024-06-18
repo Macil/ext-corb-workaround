@@ -2,6 +2,8 @@
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Macil/ext-corb-workaround/blob/master/LICENSE.txt) [![npm version](https://badge.fury.io/js/ext-corb-workaround.svg)](https://badge.fury.io/js/ext-corb-workaround) [![CI](https://github.com/Macil/ext-corb-workaround/workflows/CI/badge.svg)](https://github.com/Macil/ext-corb-workaround/actions?query=workflow%3ACI+branch%3Amaster)
 
+**Update: This project is discontinued as the Chrome bug it works around is no longer present in current versions. It still works but should be unnecessary.**
+
 This package is a work-around for a bug with Cross-Origin Request Blocking (CORB) as implemented in Chrome extensions.
 
 According to https://www.chromium.org/Home/chromium-security/extension-content-script-fetches, "content scripts should be subject to the same request rules as the page they are running within", but currently Chrome blocks requests from content scripts if the extension has permissions to the requested domain, regardless of whether the page it's running within also has permissions to the requested domain because of CORS.
